@@ -46,15 +46,15 @@ class LQRAgent():
 
         return B
 
-    def action(self, goal=None):
+    def get_action(self, goal=None):
         if goal == None:
-            goal = np.zeros(self.env.state.shape)
-        u = np.zeros(self.env.action_space.shape)
+            goal = np.zeros(self.sim_env.state.shape)
+        u = np.zeros(self.sim_env.action_space.shape)
         x = self.env.state
         A = self.approximate_A(x, u)
         B = self.approximate_B(x, u)
         Q = np.eye(x.shape[0])
-        R = np.eye(self.env.action_space.shape[0])
+        R = np.eye(self.sim_env.action_space.shape[0])
         P = sol_riccatti(A, B, Q, R)
         K = np.linalg.inv(R) @ B.T @ P
         u = -K @ (x-np.copy(goal))

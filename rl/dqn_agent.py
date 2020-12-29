@@ -26,7 +26,7 @@ class DQNModel(Model):
         return self.d2(x)
 
 class DQNAgent():
-    def __init__(self, env, savedir="dqn/"):
+    def __init__(self, env, savedir="my_model"):
         
         # env, state, and network model
         self.env = env
