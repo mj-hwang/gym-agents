@@ -10,10 +10,10 @@ Below gif files show the sample result of the trained agent.
 
 - **early stage**
 
-![alt text](./viz/dqn_early.gif)
+![alt text](../viz/dqn_early.gif)
 
 - **later stage**
 
-![alt text](./viz/dqn_later.gif)
+![alt text](../viz/dqn_later.gif)
 
 (Other algorithms will be updated in the later version)
