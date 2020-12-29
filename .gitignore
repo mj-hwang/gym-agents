@@ -1,5 +1,8 @@
 videos/
 .ipynb_checkpoints/
+my_model/
+__pycache__/
+**/__pycache__/
 .DS_Store
-*.pyo
-*.pyc
+*.py[cod]
+
