@@ -1,14 +1,8 @@
 ### Training script for DQN Agent in Open AI Atari Environment
 
 import gym
-import time
-import cv2
-import numpy as np
-import scipy.linalg
-import matplotlib.pyplot as plt
 import tensorflow as tf
 from rl.dqn_agent import DQNAgent
-from misc.random_agent import RandomAgent
 from misc.atari_utils import *
 
 
