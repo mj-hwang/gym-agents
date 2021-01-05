@@ -5,25 +5,24 @@ import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense, Flatten, Conv2D
 from tensorflow.keras import Model, losses, optimizers
 
-
-class DQNModel(Model):
-    def __init__(self, obs_size, action_size):
-        super(DQNModel, self).__init__()
+# class DQNModel(Model):
+#     def __init__(self, action_size):
+#         super(DQNModel, self).__init__()
         
-        self.conv1 = Conv2D(32, kernel_size=(8,8), strides=4, activation='relu')
-        self.conv2 = Conv2D(64, kernel_size=(4,4), strides=2, activation='relu')
-        self.conv3 = Conv2D(64, kernel_size=(3,3), strides=4, activation='relu')
-        self.flatten = Flatten()
-        self.d1 = Dense(1000, activation='relu')
-        self.d2 = Dense(action_size)
+#         self.conv1 = Conv2D(32, kernel_size=(8,8), strides=4, activation='relu')
+#         self.conv2 = Conv2D(64, kernel_size=(4,4), strides=2, activation='relu')
+#         self.conv3 = Conv2D(64, kernel_size=(3,3), strides=4, activation='relu')
+#         self.flatten = Flatten()
+#         self.d1 = Dense(1000, activation='relu')
+#         self.d2 = Dense(action_size)
 
-    def call(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = self.conv3(x)
-        x = self.flatten(x)
-        x = self.d1(x)
-        return self.d2(x)
+#     def call(self, x):
+#         x = self.conv1(x)
+#         x = self.conv2(x)
+#         x = self.conv3(x)
+#         x = self.flatten(x)
+#         x = self.d1(x)
+#         return self.d2(x)
 
 class DQNAgent():
     def __init__(self, env, savedir="my_model"):
@@ -32,7 +31,7 @@ class DQNAgent():
         self.env = env
         self.t = 1
         self.state = env.reset()
-        self.obs_size = env.observation_space.shape[0]
+        self.obs_size = env.observation_space.shape
         self.act_size = env.action_space.n
         
         self.model = self.create_model()
@@ -76,21 +75,18 @@ class DQNAgent():
 #         # log data
 #         self.mean_episode_rewards = []
     
+    # create a deep-Q network
     def create_model(self):
-        # Network defined by the Deepmind paper
-        inputs = Input(shape=(84, 84, 4,))
-
-        # Convolutions on the frames on the screen
+        inputs = Input(shape=(*self.obs_size,))
+        
         layer1 = Conv2D(32, 8, strides=4, activation="relu")(inputs)
         layer2 = Conv2D(64, 4, strides=2, activation="relu")(layer1)
         layer3 = Conv2D(64, 3, strides=1, activation="relu")(layer2)
-
         layer4 = Flatten()(layer3)
-
         layer5 = Dense(512, activation="relu")(layer4)
-        action = Dense(self.act_size, activation="linear")(layer5)
-
-        return Model(inputs=inputs, outputs=action)
+        
+        outputs = Dense(self.act_size, activation="linear")(layer5)
+        return Model(inputs=inputs, outputs=outputs)
 
     
     def get_action(self, state, test=True):
